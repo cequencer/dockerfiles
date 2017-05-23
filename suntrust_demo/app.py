@@ -6,7 +6,7 @@ import os
 
 app = Flask(__name__)
 redis = Redis(host='redis', port=6379)
-server_name = os.getenv('HOSTNAME')
+server_name = os.getenv('SRV_NAME')
 server_health_key = '{0}_health'.format(server_name)
 
 if os.path.isfile('/run/secrets/demo_title'):
@@ -42,11 +42,6 @@ def health_check():
 def version():
     return '2.0', 200
 
-@app.route('/headers')
-def headers():
-    print request.__dict__
-    return 'printed to log', 200
-
 @app.route("/get_my_ip", methods=["GET"])
 def get_my_ip():
     return jsonify({'ip': request.headers.get('X-Forwarded-For', '')}), 200
@@ -60,11 +55,6 @@ def listip():
     items = [item for item in _items]
 
     return render_template('list.html', items=items, hits=redis.get('hits'), server_name=server_name)
-
-@app.route('/hostname')
-def hostname():
-    server_name = os.getenv('HOSTNAME')
-    return server_name, 200
 
 @app.route('/secret')
 def secret():
