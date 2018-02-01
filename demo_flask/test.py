@@ -11,5 +11,4 @@ def get_my_ip():
     return jsonify({'ip': request.headers}), 200
 
 if __name__ == '__main__':
-    health_on()
     app.run(host='0.0.0.0')

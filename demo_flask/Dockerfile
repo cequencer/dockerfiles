@@ -1,5 +1,6 @@
 FROM alpine
-MAINTAINER clemenko@docker.com
+LABEL maintainer="clemenko@docker.com",
+      GITREPO="https://github.com/clemenko/dockerfiles/tree/master/demo_flask"
 RUN apk -U upgrade && apk add --no-cache curl py2-pip  &&\
     pip install --no-cache-dir --upgrade pip &&\
     pip install --no-cache-dir flask redis pymongo &&\

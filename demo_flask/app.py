@@ -38,9 +38,10 @@ def health_check():
     else:
         return jsonify({'redis': 'down', 'mongo': 'down'}), 500
 
-@app.route('/version')
-def version():
-    return '2.0', 200
+@app.route('/info')
+def info(server_name=None):
+    server_name = os.getenv('HOSTNAME')
+    return server_name + ' : 0.1', 200
 
 @app.route('/headers')
 def headers():
@@ -58,13 +59,7 @@ def listip():
     server_name = os.getenv('HOSTNAME')
     _items = db.ipdb.find()
     items = [item for item in _items]
-
     return render_template('list.html', items=items, hits=redis.get('hits'), server_name=server_name)
-
-@app.route('/hostname')
-def hostname():
-    server_name = os.getenv('HOSTNAME')
-    return server_name, 200
 
 @app.route('/secret')
 def secret():
