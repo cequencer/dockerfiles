@@ -43,6 +43,19 @@ def info(server_name=None):
     server_name = os.getenv('HOSTNAME')
     return server_name + ' : 0.1', 200
 
+@app.route('/headers')
+def headers():
+    print request.__dict__
+    return 'printed to log', 200
+
+@app.route("/get_my_ip", methods=["GET"])
+def get_my_ip():
+    print jsonify({'ip': request.headers.get('X-Forwarded-For', '')}), 200
+    print request.headers.get("X-Forwarded-Host")
+    print request.remote_addr
+    return jsonify({'ip': request.headers.getlist("X-Forwarded-For")})
+    #X-Real-IP
+
 @app.route('/list')
 def listip():
     server_name = os.getenv('HOSTNAME')
